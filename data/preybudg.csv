@@ -1,0 +1,146 @@
+"","Subject_tax","Behavior","exposure","ind","duration","totaltime","prop"
+"1","Clam","Burrow","pre","Loki",4376,18322.457,0.238832597615047
+"2","Clam","Burrow","pre","Ragnar",21612,46350.55,0.466272784249594
+"3","Clam","Burrow","pre","Haliai",10632,32055.008,0.331679842350999
+"4","Clam","Burrow","act","Ragnar",7204,33799.804,0.21313733061884
+"5","Clam","Burrow","act","Caly",40126.209,40126.209,1
+"6","Clam","Burrow","act","Scylla",41340.489,61831.489,0.66859927956773
+"7","Clam","Burrow","post","Loki",910.314,13424.897,0.0678078945410158
+"8","Clam","Burrow","post","Ragnar",7204,14408,0.5
+"9","Clam","Stationary","pre","Loki",13946.457,18322.457,0.761167402384953
+"10","Clam","Stationary","pre","Ragnar",24738.55,46350.55,0.533727215750406
+"11","Clam","Stationary","pre","Haliai",21423.008,32055.008,0.668320157649001
+"12","Clam","Stationary","pre","Scylla",9609.315,9609.315,1
+"13","Clam","Stationary","act","Loki",8660.207,8660.207,1
+"14","Clam","Stationary","act","Ragnar",26595.804,33799.804,0.78686266938116
+"15","Clam","Stationary","act","Haliai",17321.732,17321.732,1
+"16","Clam","Stationary","act","Scylla",20491,61831.489,0.33140072043227
+"17","Clam","Stationary","post","Loki",12514.583,13424.897,0.932192105458984
+"18","Clam","Stationary","post","Ragnar",7204,14408,0.5
+"19","Clam","Stationary","post","Haliai",10664.995,10664.995,1
+"20","Clam","Stationary","post","Scylla",3261.763,3261.763,1
+"21","Hermit Crab","Burrow","pre","Loki",16.223,7157.42,0.0022665988582478
+"22","Hermit Crab","Burrow","pre","Ragnar",14442.247,35231.549,0.409923702190897
+"23","Hermit Crab","Burrow","pre","Haliai",6011.065,26185.732,0.229554972914257
+"24","Hermit Crab","Burrow","pre","Caly",8.248,11914.859,0.00069224486836143
+"25","Hermit Crab","Burrow","pre","Scylla",426.848,32421.368,0.0131656381680131
+"26","Hermit Crab","Burrow","act","Loki",1788.18,9201.655,0.194332432589572
+"27","Hermit Crab","Burrow","act","Ragnar",6006.406,18170.435,0.330559284904296
+"28","Hermit Crab","Burrow","act","Haliai",1123.733,15936.021,0.0705152810729855
+"29","Hermit Crab","Burrow","act","Caly",158.526,16858.425,0.00940336953185128
+"30","Hermit Crab","Burrow","post","Ragnar",5715.798,14089.376,0.405681415557368
+"31","Hermit Crab","Burrow","post","Haliai",776.955,14308.305,0.0543009811434688
+"32","Hermit Crab","Burrow","post","Caly",8765.424,14950.363,0.586301750666522
+"33","Hermit Crab","Burrow","post","Scylla",9.006,6593.637,0.00136586226994298
+"34","Hermit Crab","Climb","pre","Scylla",6.259,32421.368,0.000193051693562098
+"35","Hermit Crab","Climb","act","Ragnar",48.669,18170.435,0.00267847192431001
+"36","Hermit Crab","Roaming","pre","Loki",1555.923,7157.42,0.217386013395888
+"37","Hermit Crab","Roaming","pre","Ragnar",171.247,35231.549,0.00486061512651629
+"38","Hermit Crab","Roaming","pre","Haliai",13080.673,26185.732,0.499534364744892
+"39","Hermit Crab","Roaming","pre","Caly",4768.696,11914.859,0.400231005671154
+"40","Hermit Crab","Roaming","pre","Scylla",19144.35,32421.368,0.590485571120873
+"41","Hermit Crab","Roaming","act","Loki",1423.916,9201.655,0.154745640865692
+"42","Hermit Crab","Roaming","act","Ragnar",6021.499,18170.435,0.331389919944129
+"43","Hermit Crab","Roaming","act","Haliai",5981.823,15936.021,0.375364904451368
+"44","Hermit Crab","Roaming","act","Caly",9091.251,16858.425,0.539270483452636
+"45","Hermit Crab","Roaming","post","Loki",7306.749,19845.548,0.368180762758479
+"46","Hermit Crab","Roaming","post","Ragnar",1729.177,14089.376,0.122729140027209
+"47","Hermit Crab","Roaming","post","Haliai",2445.891,14308.305,0.170942050787986
+"48","Hermit Crab","Roaming","post","Caly",186.723,14950.363,0.0124895295184471
+"49","Hermit Crab","Roaming","post","Scylla",156.714,6593.637,0.0237674594461297
+"50","Hermit Crab","Stationary","pre","Loki",5585.274,7157.42,0.780347387745864
+"51","Hermit Crab","Stationary","pre","Ragnar",20618.055,35231.549,0.585215682682587
+"52","Hermit Crab","Stationary","pre","Haliai",7093.994,26185.732,0.27091066234085
+"53","Hermit Crab","Stationary","pre","Caly",7137.915,11914.859,0.599076749460485
+"54","Hermit Crab","Stationary","pre","Scylla",12843.911,32421.368,0.396155739017551
+"55","Hermit Crab","Stationary","act","Loki",5989.559,9201.655,0.650921926544736
+"56","Hermit Crab","Stationary","act","Ragnar",6093.861,18170.435,0.335372323227265
+"57","Hermit Crab","Stationary","act","Haliai",8830.465,15936.021,0.554119814475646
+"58","Hermit Crab","Stationary","act","Caly",7608.648,16858.425,0.451326147015513
+"59","Hermit Crab","Stationary","act","Scylla",25941.934,25941.934,1
+"60","Hermit Crab","Stationary","post","Loki",12538.799,19845.548,0.631819237241521
+"61","Hermit Crab","Stationary","post","Ragnar",6644.401,14089.376,0.471589444415423
+"62","Hermit Crab","Stationary","post","Haliai",11085.459,14308.305,0.774756968068545
+"63","Hermit Crab","Stationary","post","Caly",5998.216,14950.363,0.401208719815031
+"64","Hermit Crab","Stationary","post","Scylla",6427.917,6593.637,0.974866678283927
+"65","Snail","Burrow","pre","Loki",4749.676,20833.066,0.227987373533977
+"66","Snail","Burrow","pre","Ragnar",10044.336,32417.929,0.309838916606918
+"67","Snail","Burrow","pre","Haliai",7204,32216.239,0.223613935816654
+"68","Snail","Burrow","act","Loki",1788.18,8875.398,0.201476035215547
+"69","Snail","Burrow","post","Loki",3387,12775.754,0.265111554276953
+"70","Snail","Climb","pre","Loki",8059.758,20833.066,0.386873348358806
+"71","Snail","Climb","pre","Ragnar",14408,32417.929,0.444445417842701
+"72","Snail","Climb","pre","Haliai",5228.799,32216.239,0.162303209881203
+"73","Snail","Climb","pre","Scylla",17088.76,31840.299,0.536702246420487
+"74","Snail","Climb","act","Loki",1788.18,8875.398,0.201476035215547
+"75","Snail","Climb","act","Ragnar",9004.799,24667.585,0.36504582836139
+"76","Snail","Climb","act","Haliai",31915.676,39119.266,0.815855696269966
+"77","Snail","Climb","act","Caly",16571.055,39632.123,0.418121809926761
+"78","Snail","Climb","act","Scylla",14051.868,28302.889,0.496481754919083
+"79","Snail","Climb","post","Loki",7204,12775.754,0.563880613230342
+"80","Snail","Climb","post","Ragnar",7204,15758.927,0.457137722638096
+"81","Snail","Climb","post","Haliai",7204,16208.198,0.444466436059086
+"82","Snail","Roaming","pre","Loki",7935.808,20833.066,0.380923672012559
+"83","Snail","Roaming","pre","Ragnar",2765.593,32417.929,0.0853106008098173
+"84","Snail","Roaming","pre","Haliai",9313.101,32216.239,0.289080950759026
+"85","Snail","Roaming","pre","Caly",2705.781,27252.077,0.0992871479116986
+"86","Snail","Roaming","pre","Scylla",10879.53,31840.299,0.341690572692172
+"87","Snail","Roaming","act","Loki",3048.602,8875.398,0.343489046913727
+"88","Snail","Roaming","act","Ragnar",6889.099,24667.585,0.27927739987518
+"89","Snail","Roaming","act","Haliai",5402.799,39119.266,0.138110950241244
+"90","Snail","Roaming","act","Caly",855.932,39632.123,0.0215969253022353
+"91","Snail","Roaming","act","Scylla",5104.799,28302.889,0.180363177766058
+"92","Snail","Roaming","post","Loki",1970.244,12775.754,0.154217434055164
+"93","Snail","Roaming","post","Ragnar",1350.927,15758.927,0.0857245547238083
+"94","Snail","Roaming","post","Haliai",3906.62,16208.198,0.241027410943524
+"95","Snail","Roaming","post","Caly",2027.87,2027.87,1
+"96","Snail","Stationary","pre","Loki",87.824,20833.066,0.00421560609465741
+"97","Snail","Stationary","pre","Ragnar",5200,32417.929,0.160405064740564
+"98","Snail","Stationary","pre","Haliai",10470.339,32216.239,0.325001903543117
+"99","Snail","Stationary","pre","Caly",24546.296,27252.077,0.900712852088301
+"100","Snail","Stationary","pre","Scylla",3872.009,31840.299,0.12160718088734
+"101","Snail","Stationary","act","Loki",2250.436,8875.398,0.253558882655178
+"102","Snail","Stationary","act","Ragnar",8773.687,24667.585,0.35567677176343
+"103","Snail","Stationary","act","Haliai",1800.791,39119.266,0.0460333534887899
+"104","Snail","Stationary","act","Caly",22205.136,39632.123,0.560281264771004
+"105","Snail","Stationary","act","Scylla",9146.222,28302.889,0.32315506731486
+"106","Snail","Stationary","post","Loki",214.51,12775.754,0.0167903984375404
+"107","Snail","Stationary","post","Ragnar",7204,15758.927,0.457137722638096
+"108","Snail","Stationary","post","Haliai",5097.578,16208.198,0.314506152997391
+"109","Swim Crab","Burrow","pre","Ragnar",1631.98,22596.369,0.0722231080577592
+"110","Swim Crab","Burrow","act","Loki",1791.977,8761.328,0.204532577709681
+"111","Swim Crab","Burrow","act","Haliai",13507,13656.798,0.989031250224247
+"112","Swim Crab","Burrow","act","Scylla",8580.967,21068.03,0.407298024542399
+"113","Swim Crab","Burrow","post","Ragnar",7204,14089.535,0.511301473043645
+"114","Swim Crab","Climb","pre","Loki",1888.985,16554.688,0.11410574454801
+"115","Swim Crab","Climb","pre","Ragnar",7.856,22596.369,0.00034766647685741
+"116","Swim Crab","Climb","pre","Haliai",16.223,21601.726,0.000751004803967979
+"117","Swim Crab","Climb","act","Loki",1800.3,8761.328,0.205482547851193
+"118","Swim Crab","Climb","act","Ragnar",3268.986,23076.019,0.141661609829668
+"119","Swim Crab","Climb","post","Ragnar",6878.271,14089.535,0.488182967003524
+"120","Swim Crab","Climb","post","Haliai",357.071,3615.591,0.0987586814990966
+"121","Swim Crab","Roaming","pre","Loki",2241.57,16554.688,0.135403941167602
+"122","Swim Crab","Roaming","pre","Ragnar",65.325,22596.369,0.0028909511966281
+"123","Swim Crab","Roaming","pre","Haliai",899.529,21601.726,0.0416415336441171
+"124","Swim Crab","Roaming","pre","Caly",3354.608,21221.85,0.158073306521345
+"125","Swim Crab","Roaming","pre","Scylla",1006.907,13511.269,0.0745234959055289
+"126","Swim Crab","Roaming","act","Loki",394.27,8761.328,0.0450011687725879
+"127","Swim Crab","Roaming","act","Ragnar",1149.74,23076.019,0.0498240186056356
+"128","Swim Crab","Roaming","act","Haliai",138.983,13656.798,0.0101768364736741
+"129","Swim Crab","Roaming","act","Caly",114.236,12258.032,0.00931927735218834
+"130","Swim Crab","Roaming","post","Ragnar",7.264,14089.535,0.000515559952830239
+"131","Swim Crab","Roaming","post","Haliai",16.224,3615.591,0.00448723320751711
+"132","Swim Crab","Roaming","post","Scylla",810.016,3819.654,0.212065281305584
+"133","Swim Crab","Stationary","pre","Loki",12424.133,16554.688,0.750490314284389
+"134","Swim Crab","Stationary","pre","Ragnar",20891.208,22596.369,0.924538274268755
+"135","Swim Crab","Stationary","pre","Haliai",20685.974,21601.726,0.957607461551915
+"136","Swim Crab","Stationary","pre","Caly",17867.242,21221.85,0.841926693478655
+"137","Swim Crab","Stationary","pre","Scylla",12504.362,13511.269,0.925476504094471
+"138","Swim Crab","Stationary","act","Loki",4774.781,8761.328,0.544983705666538
+"139","Swim Crab","Stationary","act","Ragnar",18657.293,23076.019,0.808514371564697
+"140","Swim Crab","Stationary","act","Haliai",10.815,13656.798,0.000791913302078569
+"141","Swim Crab","Stationary","act","Caly",12143.796,12258.032,0.990680722647812
+"142","Swim Crab","Stationary","act","Scylla",12487.063,21068.03,0.592701975457601
+"143","Swim Crab","Stationary","post","Loki",14408,14408,1
+"144","Swim Crab","Stationary","post","Haliai",3242.296,3615.591,0.896754085293386
+"145","Swim Crab","Stationary","post","Scylla",3009.638,3819.654,0.787934718694416

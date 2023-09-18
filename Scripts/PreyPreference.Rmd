@@ -1,0 +1,208 @@
+---
+title: "PreyPreferences"
+author: "Madelyn Hair"
+date: "2023-06-07"
+output: html_document
+---
+
+Load necessary packages
+```{r}
+library(tidyverse)
+```
+
+**Create your publication theme- diff for this plot!**
+```{r}
+theme_thesi <- function() {
+  font <- 'Trebuchet MS' #Same as PPT
+  theme_bw() %+replace%
+    theme(
+      
+      #Gridlines
+      panel.grid.major.x=element_blank(),
+      panel.grid.minor.y=element_blank(),
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.line = element_line(colour = "black"),
+      plot.margin = margin(10,5,8,2),
+      panel.border = element_blank(),
+      
+      #Text elements
+      plot.title = element_text(family = font, 
+                                size = 12, face = 'bold',
+                hjust = -.2, vjust = 1.8),
+      axis.title.x = element_text(family = font,
+                                size = 16, margin = margin(t = 5)), 
+      axis.title.y = element_text(family = font, margin= margin(r=5), angle = 90, size = 16, face = 'bold'),
+      axis.text = element_text(family = font,
+                               size = 10),
+      axis.text.x = element_text(margin = margin(t = 0), size = 12, angle = 45, face  = "bold"), 
+      axis.text.y = element_text( margin = margin(r = 5), size = 10),
+      legend.text = element_text(size = 10),
+      legend.title = element_text(size = 12),
+      
+      #facet labels
+      strip.text.x = element_text(size = 14, face = 'bold', family =font),
+      strip.background = element_rect(fill = 'white')
+    )
+  
+}
+?margin
+```
+
+Loki Day One, 24 hours of feeding:
+```{r}
+R = 3
+n_clam = 1
+n_crab = 2
+n_hermit = 1
+n_snail = 0
+num_crab = log((R-n_crab)/R)
+num_clam = log((R-n_clam)/R)
+num_hermit = log((R-n_hermit)/R)
+num_snail = log((R - n_snail)/R)
+sum = sum(num_crab, num_clam, num_hermit,num_snail)
+ma_crab = num_crab /sum
+ma_snail = num_snail /sum
+ma_hermit = num_hermit / sum
+ma_clam = num_clam/sum
+loki<-tibble(ma = c(ma_clam, ma_hermit, ma_snail, ma_crab), tax = c("Clams", "Hermits", "Snails", "Crabs"), ind = ("Loki"))
+```
+
+Ragnar Day One, 24 hours
+```{r}
+R=3
+n_clam = 2
+n_crab =2
+n_hermit = 1
+n_snail = 0
+
+
+num_crab = log((R-n_crab)/R)
+num_clam = log((R-n_clam)/R)
+num_hermit = log((R-n_hermit)/R)
+num_snail = log((R - n_snail)/R)
+sum = sum(num_crab, num_clam, num_hermit,num_snail)
+ma_crab = num_crab /sum
+ma_snail = num_snail /sum
+ma_hermit = num_hermit / sum
+ma_clam = num_clam/sum
+ragnar<-tibble(ma = c(ma_clam, ma_hermit, ma_snail, ma_crab), tax = c("Clams", "Hermits", "Snails", "Crabs"), ind = ("Ragnar"))
+```
+
+
+Haliai Day one, 24 hours
+```{r}
+R = 3
+n_clam = 1
+n_snail = 0
+n_hermit = 2
+n_crab = 2
+
+num_crab = log((R-n_crab)/R)
+num_clam = log((R-n_clam)/R)
+num_hermit = log((R-n_hermit)/R)
+num_snail = log((R - n_snail)/R)
+sum = sum(num_crab, num_clam, num_hermit,num_snail)
+ma_crab = num_crab /sum
+ma_snail = num_snail /sum
+ma_hermit = num_hermit / sum
+ma_clam = num_clam/sum
+haliai<-tibble(ma = c(ma_clam, ma_hermit, ma_snail, ma_crab), tax = c("Clams", "Hermits", "Snails", "Crabs"), ind = ("Haliai"))
+```
+
+Calypso Day one, 24 hours
+```{r}
+R = 3
+n_clam = 2
+n_snail = 1
+n_hermit =2
+n_crab = 2
+
+num_crab = log((R-n_crab)/R)
+num_clam = log((R-n_clam)/R)
+num_hermit = log((R-n_hermit)/R)
+num_snail = log((R - n_snail)/R)
+sum = sum(num_crab, num_clam, num_hermit,num_snail)
+ma_crab = num_crab /sum
+ma_snail = num_snail /sum
+ma_hermit = num_hermit / sum
+ma_clam = num_clam/sum
+caly<-tibble(ma = c(ma_clam, ma_hermit, ma_snail, ma_crab), tax = c("Clams", "Hermits", "Snails", "Crabs"), ind = ("Calypso"))
+```
+
+Selkie Day One, 24 hours
+
+```{r}
+R = 3
+n_clam = 1
+n_snail = 1
+n_hermit = 2.99
+n_crab = 2.99
+
+num_crab = log((R-n_crab)/R)
+num_clam = log((R-n_clam)/R)
+num_hermit = log((R-n_hermit)/R)
+num_snail = log((R - n_snail)/R) 
+sum = sum(num_crab, num_clam, num_hermit,num_snail)
+ma_crab = num_crab /sum
+ma_snail = num_snail /sum
+ma_hermit = num_hermit / sum
+ma_clam = num_clam/sum
+selkie<-tibble(ma = c(ma_clam, ma_hermit, ma_snail, ma_crab), tax = c("Clams", "Hermits", "Snails", "Crabs"), ind = ("Selkie"))
+```
+
+Scylla Day one, 24 hours
+```{r}
+R = 3
+n_clam = 0
+n_crab = 1
+n_hermit =1
+n_snail = 0
+
+num_crab = log((R-n_crab)/R)
+num_clam = log((R-n_clam)/R)
+num_hermit = log((R-n_hermit)/R)
+num_snail = log((R - n_snail)/R)
+sum = sum(num_crab, num_clam, num_hermit,num_snail)
+ma_crab = num_crab /sum
+ma_snail = num_snail /sum
+ma_hermit = num_hermit / sum
+ma_clam = num_clam/sum
+scylla<-tibble(ma = c(ma_clam, ma_hermit, ma_snail, ma_crab), tax = c("Clams", "Hermits", "Snails", "Crabs"), ind = ("Scylla"))
+```
+
+
+Make figure 
+```{r}
+library(ggthemes)
+library(scales)
+ylab = bquote("Manly's"~~ alpha )
+ylab
+?bquote
+all_ma<-rbind(loki,ragnar,haliai,caly,selkie,scylla)
+all_ma <- all_ma%>%mutate(tax = factor(tax, levels = c("Hermits", "Crabs", "Clams", "Snails"
+))) %>%
+  mutate(ind = factor(ind, levels = c("Loki", "Ragnar", "Haliai", "Calypso", "Selkie", "Scylla")))
+all_ma %>%
+  group_by(tax) %>%
+  summarize(mean = mean(ma))
+all_ma %>% ggplot(aes(x = ma, y = tax, color = tax))+
+  geom_point(size = 3)+
+  theme_thesi()+
+  facet_wrap(~ind,nrow=1)+
+  labs(x = "Manly's Alpha")+
+  xlim(0,.5)+
+  coord_flip()+
+  theme(strip.background = element_blank())
+
+all_ma%>%
+  ggplot(aes(x = ind, y = ma, fill = tax)) +
+  geom_col()+
+  theme_thesi()+
+  labs(y = ylab, fill = "Taxon") +
+  theme(axis.title.x = element_blank())+
+  scale_fill_manual(values = c("#7ADB3C","#6A8F53", "#DB9F9A", "#4E5ED9"))
+ggsave("graphics/PPT/preypreference.jpg", width = 8, height = 4.8,  units = "in")
+```
+
+

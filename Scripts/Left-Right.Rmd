@@ -1,0 +1,635 @@
+---
+title: "Left-Right"
+author: "Madelyn Hair"
+date: "2023-05-16"
+output: html_document
+---
+```{r}
+library(tidyverse)
+library(hms)
+```
+
+Load R environment with complete models: Do this to skip running the bayesian bournoilli models
+```{r}
+
+load("Workspaces/Left-Right.RData")
+```
+
+**Create the thesis theme: these_thesi**
+```{r}
+theme_thesi <- function() {
+  font <- 'Trebuchet MS' #Same as PPT
+  theme_bw() %+replace%
+    theme(
+      
+      #Gridlines
+      panel.grid.major.x=element_blank(),
+      panel.grid.major.y =element_blank(),
+      panel.grid.minor.y=element_blank(),
+      panel.grid.minor.x = element_blank(),
+      panel.border = element_blank(),
+      axis.line = element_line(colour = "black"),
+      plot.margin = margin(r= 5, t = 8, b = 8),
+      
+      #Text elements
+      plot.title = element_text(family = font, 
+                                size = 15, face = 'bold',
+               hjust = -.15, vjust = 2),
+      axis.title = element_text(family = font,
+                                size = 12, face = 'bold'), 
+      axis.title.y = element_text(margin= margin(r=5), angle = 90, size = 12),
+      axis.title.x = element_blank(),
+      axis.text = element_text(family = font,
+                               size = 10),
+      axis.text.x = element_text(margin = margin(t = 5), size = 10), 
+      axis.text.y = element_text(face = 'bold', margin = margin(r = 5), size = 10),
+      legend.text = element_text(size = 12),
+      legend.title = element_text(size = 18),
+      
+      #facet labels
+      strip.text.x = element_text(size = 15, face = 'bold', family =font),
+      strip.background = element_blank()
+    )
+  
+}
+
+    
+```
+**Create the presentation theme_oct()!**
+```{r}
+theme_oct <- function() {
+  font <- 'Trebuchet MS' #Same as PPT
+  theme_bw() %+replace%
+    theme(
+      
+      #Gridlines
+      panel.grid.major=element_blank(),
+      panel.grid.minor=element_blank(),
+      panel.border = element_blank(),
+      axis.line = element_line(colour = "black"),
+       plot.margin = margin(r= 8, t = 8, b = 8, l = 8),
+      #Text elements
+      plot.title = element_text(family = font, 
+                                size = 20,
+                                face = 'bold',
+                hjust = .5,
+                                vjust = 2),
+      axis.title = element_text(family = font,
+                                size = 15, face = 'bold'), 
+      #axis.title.x = element_blank(),
+      axis.title.x = element_text(margin = margin(5)),
+     # axis.title.y = element_text(margin= margin(r=10), angle = 90, size = 18),
+     axis.title.y=element_blank(),
+      axis.text = element_text(family = font,
+                               size = 15),
+     axis.text.y=element_text(margin=margin(r=5), face = "bold", size = 15),
+      axis.text.x = element_text(margin = margin(5), size =12), 
+      legend.text = element_text(size = 12),
+      legend.title = element_text(size = 18),
+      
+      #facet labels
+      strip.text.x = element_text(size = 15, face = 'bold', family =font),
+      strip.background = element_blank()
+    )
+  
+}
+```
+Read Data
+```{r}
+df<-read.csv('data/sub1.csv')
+df<- df%>%
+  mutate(Experimental.Day = as.factor(Experimental.Day),rtime = as_hms(rtime))
+df1 <-df %>%
+   mutate(bottle=factor(bottle,levels = c('pre', 'post')),
+                        exposure = factor(exposure, levels = c("pre", 'active','post')))%>%
+  mutate(ind=factor(ind, levels = c("Loki", "Ragnar", "Haliai", "Caly",'Selkie', "Scylla")))%>%
+  filter(Behavior %in% c("left", "right"))%>%
+    filter(., grepl("Total",obs)) %>%
+  select(ind,Experimental.Day,Subject, Subject_tax,Behavior,exposure,date,rtime,dur, newbehav)
+glimpse(df1)
+
+
+```
+
+
+Octos: Get side of tank for every 30 seconds
+```{r}
+interval=30
+octos <- df1 %>%
+  filter(Subject_tax == "Octopus")%>%
+ filter(dur > 30) %>%
+  mutate(ntime=as_hms(rtime))
+
+df_new=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+df_new_octos=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+
+for (i in 1:nrow(octos)){
+  df_new=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+  df_new=rbind(df_new, octos[rep(i, round(octos$dur[i]/interval)),])
+
+  for(j in 1:(round(octos$dur[i]/interval))){
+  print(c(i,j))
+    if(j==1) df_new$ntime[j]=df_new$ntime[j] else df_new$ntime[j]=df_new$ntime[j-1]+as.difftime(interval,units="secs")
+  }
+  df_new_octos<-rbind(df_new_octos,df_new)
+}
+
+#library(lubridate)
+df_new_octos$date_time <- as.POSIXct(paste(df_new_octos$date, df_new_octos$ntime),  # Add hours, minutes & seconds
+                            format = "%Y-%m-%d %H:%M:%S")
+df_new_octos$esttime<-lubridate::round_date(df_new_octos$date_time, unit = '30 seconds')
+```
+
+```{r}
+interval=30
+octos <- df1 %>%
+  filter(Subject_tax == "Octopus")%>%
+  filter(dur > 30) %>%
+  mutate(ntime=as_hms(rtime))
+
+ df_new_octos=octos%>%
+   mutate(endtime=ntime+as.difftime(dur,units="secs"))%>%
+   mutate(endtime=hms(round(lubridate::seconds_to_period(endtime))))%>%
+   mutate(state_start=as.POSIXct(paste(date,ntime),format = "%Y-%m-%d %H:%M:%S"))%>%
+   mutate(state_end=as.POSIXct(paste(date,endtime),format = "%Y-%m-%d %H:%M:%S"))%>%
+   mutate(states=newbehav) 
+
+```
+
+
+Clams: Get side of tank for every 30 seconds 
+```{r}
+interval=30
+clams <- df1 %>%
+  filter(Subject_tax == "Clam") %>%
+  mutate(ntime=as_hms(rtime))
+
+df_new=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+df_new_clams=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+
+for (i in 1:nrow(clams)){
+  df_new=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+  df_new=rbind(df_new, clams[rep(i, round(clams$dur[i]/interval)),])
+
+  for(j in 1:(round(clams$dur[i]/interval))){
+  print(c(i,j))
+    if(j==1) df_new$ntime[j]=df_new$ntime[j] else df_new$ntime[j]=df_new$ntime[j-1]+as.difftime(interval,units="secs")
+  }
+  df_new_clams<-rbind(df_new_clams,df_new)
+}
+#library(lubridate)
+df_new_clams$date_time <- as.POSIXct(paste(df_new_clams$date, df_new_clams$ntime),  # Add hours, minutes & seconds
+                            format = "%Y-%m-%d %H:%M:%S")
+df_new_clams<-df_new_clams %>% mutate(esttime=lubridate::round_date(df_new_clams$date_time, unit = '30 seconds'))%>%
+   mutate(events=newbehav)
+#write.csv(df_new_clams, "data/lr_clams")
+```
+Create same side or opposite side as octo predator
+```{r}
+octo_state=df_new_octos#%>%select(states,state_start,state_end)
+
+clam_state=df_new_clams#%>%select(esttime,events)
+
+library(data.table)
+setDT(octo_state, key = c("state_start", "state_end"))
+cols <- c("state_start", "state_end")
+setDT(clam_state)[, (cols) := esttime]
+
+x=foverlaps(clam_state, octo_state)[, paste0("i.", cols) := NULL]
+
+side_clams=x %>% #select(-contains("i."))%>%
+  mutate(octo_side=states,clam_side=events) %>% select(-events,-states)   %>%
+  mutate(same = case_when(octo_side == clam_side ~ 1, TRUE ~ 0))
+```
+Run Bayesian Bernoulli models 
+```{r}
+library(brms)
+library(tidybayes)
+side_clams <- side_clams %>%mutate(Block = case_when(ind %in% c("Loki", "Ragnar", "Haliai") ~ 1, TRUE ~ 2))
+
+clam_mod1<- brm(same~exposure,
+                data = side_clams,
+                family = "bernoulli")
+clam_mod1
+pp_check(clam_mod1)
+plot(clam_mod1)
+
+clam_mod<- brm(same~exposure + (1|ind),
+                data = side_clams,
+                family = "bernoulli")
+clam_mod
+pp_check(clam_mod)
+plot(clam_mod)
+
+clam_mod2<- brm(same~exposure + (1|Block),
+                data = side_clams,
+                family = "bernoulli")
+clam_mod2
+pp_check(clam_mod2)
+plot(clam_mod2)
+library(loo)
+
+loo<- loo(clam_mod)
+waic<-waic(clam_mod)
+loo1 <- loo(clam_mod1)
+waic1 <- waic(clam_mod1)
+loo2 <- loo(clam_mod2)
+waic2 <- waic(clam_mod2)
+loo_compare(loo, loo1, loo2)
+loo_compare(waic, waic1, waic2)
+prior_summary(clam_mod)
+```
+
+Calculate estimates
+```{r}
+library(emmeans)
+library(tidybayes)
+x = emmeans(clam_mod, ~ exposure,
+        regrid = "response",epred = TRUE, re_formula = NULL) %>% 
+ contrast(method = "revpairwise") %>% as_tibble()
+
+x
+emmeans(clam_mod, ~ exposure,
+        regrid = "response",epred = TRUE, re_formula = NULL)
+clam_x3 = clam_mod %>% emmeans(~exposure, regrid = "response", epred = TRUE, re_formula=NULL) %>% 
+  gather_emmeans_draws()
+clam_x4 = clam_mod %>% emmeans(~exposure, regrid = "response", epred = TRUE, re_formula=NULL) %>% 
+  contrast(method = "revpairwise" ) %>%
+  as_tibble()
+```
+Contrast plot
+```{r}
+clam_x4=clam_x4 %>% mutate(contrast = factor(contrast, levels = c("post - active",'post - pre', "active - pre")))
+clam_xplot <- ggplot(clam_x4, aes(x = contrast, y = estimate,ymin=lower.HPD,ymax=upper.HPD)) +geom_point(size=2, color = "orange")+geom_errorbar(width = .3, color = "orange")+
+  theme_thesi()+
+  labs(y = "Contrast")+
+  #scale_fill_manual(values=c( "#56B4E9", "#CC0000","#33CC33"))+
+  theme(axis.text.x = element_text(size = 10),axis.text.y = element_text(size = 10),
+        axis.title.y = element_blank(), axis.title.x= element_text(margin = margin(t=5)), plot.title = element_text(hjust = .5))+coord_flip()+geom_hline(yintercept = 0,size=1,linetype="dashed")
+clam_xplot
+```
+
+Estimate Plot 
+```{r}
+library(tidybayes)
+
+clam_x3$exposure <- factor(clam_x3$exposure, levels = c("post", "active", 'pre'))
+
+clamp <- ggplot(clam_x3, aes(x = .value, y = exposure, fill = exposure)) +
+ stat_halfeye(.width = c(0.8, 0.95), point_interval = "median_hdi",normalize="groups")+
+  theme_oct()+
+  scale_fill_manual(values=c("#56B4E9", "#CC0000", '#33CC33'))+
+ labs( y = "", x = "Probability")+
+  theme(legend.position = 'none', axis.title.x = element_text(margin = margin(t = 5))) +
+  xlim(0,1)
+clamp
+ggsave("graphics/PPT/clams_vic.jpg", width = 9.6, height = 4.8, units = "in")
+
+```
+
+
+Crabs: Get side of tank for every 30 seconds
+```{r}
+interval=30
+crabs <- df1 %>%
+  filter(Subject_tax == "Swim Crab") %>%
+   filter(dur > 30) %>%
+  mutate(ntime=as_hms(rtime))
+
+df_new=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+df_new_crabs=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+
+for (i in 1:nrow(crabs)){
+  df_new=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+  df_new=rbind(df_new, crabs[rep(i, round(crabs$dur[i]/interval)),])
+
+  for(j in 1:(round(crabs$dur[i]/interval))){
+  print(c(i,j))
+    if(j==1) df_new$ntime[j]=df_new$ntime[j] else df_new$ntime[j]=df_new$ntime[j-1]+as.difftime(interval,units="secs")
+  }
+  df_new_crabs<-rbind(df_new_crabs,df_new)
+}
+df_new_crabs$date_time <- as.POSIXct(paste(df_new_crabs$date, df_new_crabs$ntime),  # Add hours, minutes & seconds
+                            format = "%Y-%m-%d %H:%M:%S")
+df_new_crabs<-df_new_crabs %>% mutate(esttime = round_date(df_new_crabs$date_time, unit = '30 seconds'))%>%
+   mutate(events=newbehav)
+```
+Create same side or opposite side as octo predator
+```{r}
+octo_state=df_new_octos#%>%select(states,state_start,state_end)
+
+crab_state=df_new_crabs#%>%select(esttime,events)
+
+library(data.table)
+setDT(octo_state, key = c("state_start", "state_end"))
+cols <- c("state_start", "state_end")
+setDT(crab_state)[, (cols) := esttime]
+
+x=foverlaps(crab_state, octo_state)[, paste0("i.", cols) := NULL]
+
+side_crabs=x %>% #select(-contains("i."))%>%
+  mutate(octo_side=states,crab_side=events) %>% select(-events,-states)   %>%
+  mutate(same = case_when(octo_side == crab_side ~ 1, TRUE ~ 0))
+```
+Run Bayesian Bernoulli model
+```{r}
+library(brms)
+side_crabs <- side_crabs %>%mutate(Block = case_when(ind %in% c("Loki", "Ragnar", "Haliai") ~ 1, TRUE ~ 2))
+crab_mod<- brm(same~exposure,
+                data = side_crabs,
+                family = "bernoulli")
+crab_mod2
+pp_check(crab_mod)
+plot(crab_mod)
+crab_mod1 <- brm(same~exposure + (1|ind),
+                data = side_crabs,
+                family = "bernoulli")
+crab_mod2 <- brm(same~exposure + (1|Block),
+                data = side_crabs,
+                family = "bernoulli")
+loo<- loo(crab_mod)
+waic<-waic(crab_mod)
+loo1 <- loo(crab_mod1)
+waic1 <- waic(crab_mod1)
+loo2 <- loo(crab_mod2)
+waic2 <- waic(crab_mod2)
+loo_compare(loo, loo1, loo2)
+loo_compare(waic, waic1, waic2)
+```
+
+estimates
+```{r}
+library(emmeans)
+x = emmeans(crab_mod1, ~ exposure,
+        regrid = "response") %>% 
+ contrast(method = "revpairwise") %>% as_tibble()
+x
+emmeans(crab_mod1, ~ exposure,
+        regrid = "response", epred = TRUE, re_formula=NULL, dpar = 'phi') 
+crab_x3 = crab_mod1 %>% emmeans(~exposure, regrid = "response", epred = TRUE, re_formula=NULL) %>% 
+  gather_emmeans_draws()
+crab_x4 = crab_mod1 %>% emmeans(~exposure, regrid = "response", epred = TRUE, re_formula=NULL) %>% 
+  contrast(method = "revpairwise" ) %>%
+  as_tibble()
+crab_x4
+```
+Contrast plot
+```{r}
+crab_x4=crab_x4 %>% mutate(contrast = factor(contrast, levels = c("post - active",'post - pre', "active - pre")))
+crab_xplot <- ggplot(crab_x4, aes(x = contrast, y = estimate,ymin=lower.HPD,ymax=upper.HPD)) +geom_point(size=2, color = "orange")+geom_errorbar(width = .3, color = "orange")+
+  theme_thesi()+
+  #labs(title = "Contrast")+
+  #scale_fill_manual(values=c( "#56B4E9", "#CC0000","#33CC33"))+
+  theme(axis.text.x = element_text(size = 10),axis.text.y = element_text(size = 10),
+        axis.title.y = element_blank(), plot.title = element_text(hjust = .5))+coord_flip()+geom_hline(yintercept = 0,size=1,linetype="dashed")
+crab_xplot
+```
+Estimate Plot
+```{r}
+crab_x3$exposure <- factor(crab_x3$exposure, levels = c("post", "active", 'pre'))
+
+crabp <- ggplot(crab_x3, aes(x = .value, y = exposure, fill = exposure)) +
+ stat_halfeye(.width = c(0.8, 0.95), point_interval = "median_hdi",normalize="groups")+
+  theme_oct()+
+  scale_fill_manual(values=c("#56B4E9", "#CC0000", '#33CC33'))+
+ labs( y = "", x = "Probability")+
+  theme(legend.position = 'none',axis.title.x = element_text(margin = margin(t = 5))) +
+  xlim(0,1)
+crabp
+
+ggsave("graphics/PPT/crabs_vic.jpg", width = 9.6, height = 4.8, units = "in")
+
+```
+
+
+Hermit Crabs: Get side of tank for every 30 seconds
+```{r}
+interval=30
+hermits <- df1 %>%
+  filter(Subject_tax == "Hermit Crab", dur > 30) %>%
+  mutate(ntime=as_hms(rtime))
+
+df_new=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+df_new_hermits=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+
+for (i in 1:nrow(hermits)){
+  df_new=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+  df_new=rbind(df_new, hermits[rep(i, round(hermits$dur[i]/interval)),])
+
+  for(j in 1:(round(hermits$dur[i]/interval))){
+  print(c(i,j))
+    if(j==1) df_new$ntime[j]=df_new$ntime[j] else df_new$ntime[j]=df_new$ntime[j-1]+as.difftime(interval,units="secs")
+  }
+  df_new_hermits<-rbind(df_new_hermits,df_new)
+}
+#library(lubridate)
+df_new_hermits$date_time <- as.POSIXct(paste(df_new_hermits$date, df_new_hermits$ntime),  # Add hours, minutes & seconds
+                            format = "%Y-%m-%d %H:%M:%S")
+df_new_hermits<-df_new_hermits %>% mutate(esttime=lubridate::round_date(df_new_hermits$date_time, unit = '30 seconds'))%>%
+   mutate(events=newbehav)
+
+```
+Create same side or opposite side as octo predator
+```{r}
+octo_state=df_new_octos#%>%select(states,state_start,state_end)
+
+hermit_state=df_new_hermits#%>%select(esttime,events)
+
+library(data.table)
+setDT(octo_state, key = c("state_start", "state_end"))
+cols <- c("state_start", "state_end")
+setDT(hermit_state)[, (cols) := esttime]
+
+x=foverlaps(hermit_state, octo_state)[, paste0("i.", cols) := NULL]
+
+side_hermits=x %>% select(-contains("i."))%>%
+  mutate(octo_side=states,hermit_side=events) %>% select(-events,-states)   %>%
+  mutate(same = case_when(octo_side == hermit_side ~ 1, TRUE ~ 0))
+```
+Run Bayesian Bernoulli model
+```{r}
+library(brms)
+library(tidybayes)
+hermit_mod<- brm(same~exposure,
+                data = side_hermits,
+                family = "bernoulli")
+hermit_mod
+pp_check(hermit_mod)
+plot(hermit_mod)
+library(brms)
+hermit_mod1<- brm(same~exposure + (1|ind),
+                data = side_hermits,
+                family = "bernoulli")
+hermit_mod1 <- hermit_mod
+loo<-loo(hermit_mod)
+loo1<-loo(hermit_mod1)
+loo_compare(loo,loo1)
+```
+
+estimates
+```{r}
+library(emmeans)
+x = emmeans(hermit_mod1, ~ exposure,
+        regrid = "response") %>% 
+ contrast(method = "revpairwise") %>% as_tibble()
+
+x
+emmeans(hermit_mod1, ~ exposure,
+        regrid = "response",epred = TRUE, re_formula = NULL)
+herm_x3 = hermit_mod1 %>% emmeans(~exposure, regrid = "response", epred = TRUE, re_formula=NULL) %>% 
+  gather_emmeans_draws()
+herm_x4 = hermit_mod1 %>% emmeans(~exposure, regrid = "response", epred = TRUE, re_formula=NULL) %>% 
+  contrast(method = "revpairwise" ) %>%
+  as_tibble()
+```
+Contrast plot
+```{r}
+herm_x4=herm_x4 %>% mutate(contrast = factor(contrast, levels = c("post - active",'post - pre', "active - pre")))
+herm_xplot <- ggplot(herm_x4, aes(x = contrast, y = estimate,ymin=lower.HPD,ymax=upper.HPD)) +geom_point(size=2, color = "orange")+geom_errorbar(width = .3, color = "orange")+
+  theme_thesi()+
+  #labs(title = "Contrast")+
+  #scale_fill_manual(values=c( "#56B4E9", "#CC0000","#33CC33"))+
+  theme(axis.text.x = element_text(size = 10),axis.text.y = element_text(size = 10),
+        axis.title.y = element_blank(), plot.title = element_text(hjust = .5))+coord_flip()+geom_hline(yintercept = 0,size=1,linetype="dashed")
+herm_xplot
+```
+Estimate Plot
+```{r}
+
+herm_x3$exposure <- factor(herm_x3$exposure, levels = c("post", "active", 'pre'))
+
+hermp<- ggplot(herm_x3, aes(x = .value, y = exposure, fill = exposure)) +
+ stat_halfeye(.width = c(0.8, 0.95), point_interval = "median_hdi",normalize="groups")+
+  theme_oct()+
+  scale_fill_manual(values=c("#56B4E9", "#CC0000", '#33CC33'))+
+ labs( y = "", x = "Probability")+
+  theme(legend.position = 'none',axis.title.x = element_text(margin = margin(t = 5))) +
+  xlim(0,1)
+hermp
+ggsave("graphics/PPT/hermits_vic.jpg", width = 9.6, height = 4.8, units = "in")
+
+```
+
+
+Snails:Get side of tank for every 30 seconds
+```{r}
+interval=30
+snails <- df1 %>%
+  filter(Subject_tax == "Snail", dur > 30) %>%
+  mutate(ntime=as_hms(rtime))
+
+df_new=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+df_new_snails=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+
+for (i in 1:nrow(snails)){
+  df_new=tibble(ind=factor(),Oleamide.Exposure=factor(),Experimental.Day=factor(),Subject=factor(), Subject_tax = factor(), Behavior=factor(),exposure=factor(),rtime = factor(),date = factor(),dur=numeric(length=0), newbehav = factor(),ntime = hms())
+  df_new=rbind(df_new, snails[rep(i, round(snails$dur[i]/interval)),])
+
+  for(j in 1:(round(snails$dur[i]/interval))){
+  print(c(i,j))
+    if(j==1) df_new$ntime[j]=df_new$ntime[j] else df_new$ntime[j]=df_new$ntime[j-1]+as.difftime(interval,units="secs")
+  }
+  df_new_snails<-rbind(df_new_snails,df_new)
+}
+#library(lubridate)
+df_new_snails$date_time <- as.POSIXct(paste(df_new_snails$date, df_new_snails$ntime),  # Add hours, minutes & seconds
+                            format = "%Y-%m-%d %H:%M:%S")
+df_new_snails<-df_new_snails %>% mutate(esttime=lubridate::round_date(df_new_snails$date_time, unit = '30 seconds'))%>%
+   mutate(events=newbehav)
+
+```
+Create same side or opposite side as octo predator
+```{r}
+octo_state=df_new_octos#%>%select(states,state_start,state_end)
+
+snail_state=df_new_snails#%>%select(esttime,events)
+
+library(data.table)
+setDT(octo_state, key = c("state_start", "state_end"))
+cols <- c("state_start", "state_end")
+setDT(snail_state)[, (cols) := esttime]
+
+x=foverlaps(snail_state, octo_state)[, paste0("i.", cols) := NULL]
+
+side_snails=x %>% #select(-contains("i."))%>%
+  mutate(octo_side=states,snail_side=events) %>% select(-events,-states)   %>%
+  mutate(same = case_when(octo_side == snail_side ~ 1, TRUE ~ 0))
+```
+Run Bayesian Bernoulli model
+```{r}
+library(brms)
+snail_mod<- brm(same~exposure,
+                data = side_snails,
+                family = "bernoulli")
+snail_mod
+pp_check(snail_mod)
+plot(snail_mod)
+snail_mod1 <- brm(same~exposure + (1|ind),
+                data = side_snails,
+                family = "bernoulli")
+snail_mod1
+pp_check(snail_mod1)
+plot(snail_mod1)
+loo<-loo(snail_mod)
+loo1<-loo(snail_mod1)
+loo_compare(loo,loo1)
+```
+
+estimates
+```{r}
+library(emmeans)
+x = emmeans(snail_mod1, ~ exposure,
+        regrid = "response") %>% 
+ contrast(method = "revpairwise") %>% as_tibble()
+
+x
+emmeans(snail_mod1, ~ exposure,
+        regrid = "response",epred = TRUE, re_formula=NULL)
+snail_x3 = snail_mod1 %>% emmeans(~exposure, regrid = "response", epred = TRUE, re_formula=NULL) %>% 
+  gather_emmeans_draws()
+snail_x4 = snail_mod1 %>% emmeans(~exposure, regrid = "response", epred = TRUE, re_formula=NULL) %>% 
+  contrast(method = "revpairwise" ) %>%
+  as_tibble()
+```
+Contrast plot
+```{r}
+snail_x4 = snail_x4 %>% mutate(contrast = factor(contrast, levels = c("post - active",'post - pre', "active - pre")))
+snail_xplot <- ggplot(snail_x4, aes(x = contrast, y = estimate,ymin=lower.HPD,ymax=upper.HPD)) +geom_point(size=2, color = "orange")+geom_errorbar(width = .3, color = "orange")+
+  theme_thesi()+
+  #labs(title = "Contrast")+
+  #scale_fill_manual(values=c( "#56B4E9", "#CC0000","#33CC33"))+
+  theme(axis.text.x = element_text(size = 10),axis.text.y = element_text(size = 10),
+        axis.title.y = element_blank(), plot.title = element_text(hjust = .5))+coord_flip()+geom_hline(yintercept = 0,size=1,linetype="dashed")
+snail_xplot
+```
+Estimate Plot
+```{r}
+
+snail_x3$exposure <- factor(snail_x3$exposure, levels = c("post", "active", 'pre'))
+
+snailp <- ggplot(snail_x3, aes(x = .value, y = exposure, fill = exposure)) +
+ stat_halfeye(.width = c(0.8, 0.95), point_interval = "median_hdi",normalize="groups")+
+  theme_oct()+
+  scale_fill_manual(values=c("#56B4E9", "#CC0000", '#33CC33'))+
+ labs( y = "", x = "Probability")+
+  theme(legend.position = 'none',axis.title.x = element_text(margin = margin(t = 5))) +
+  xlim(0,1)
+snailp
+ggsave("graphics/PPT/snails_vic.jpg", width = 9.6, height = 4.8, units = "in")
+
+```
+
+
+Put all plots together
+```{r}
+library(patchwork)
+hermp + herm_xplot+ crabp + crab_xplot + snailp + snail_xplot+ clamp +clam_xplot+ plot_layout(nrow = 4)
+ggsave("graphics/left-right.jpg", width = 6.5, height = 8, units = 'in')
+```
+
+Save Workspace 
+```{r}
+#save.image(file = "Workspaces/Left-Right.RData")
+```
+
+
